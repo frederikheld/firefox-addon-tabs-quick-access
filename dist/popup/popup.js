@@ -1,19 +1,21 @@
 'use strict'
 
-           
-document.addEventListener('click', async (event) => {
-    console.log('click event:', event)
+document.getElementById('clear-list').addEventListener('click', (event) => {
+    clearQuickAccessStore()
+    clearQuickAccessList()
+})
 
+document.getElementById('add-current-tab').addEventListener('click', async (event) => {
+    const currentTab = (await browser.tabs.query({ active: true, currentWindow: true }))[0]
+    console.log('currentTab:', currentTab.id)
+    await addToQuickAccessStore(currentTab.id)
+    addToQuickAccessList(currentTab.id)
+})
+
+document.addEventListener('click', async (event) => {
     const eventTargetId = event.target.id
 
-    console.log('eventTargetId:', eventTargetId)
-
     switch (eventTargetId) {
-        case 'clear-list':
-            clearQuickAccessStore()
-            clearQuickAccessList()
-            break
-        
         case eventTargetId.match(/^list-item-\d+-favicon$/)?.input:
         case eventTargetId.match(/^list-item-\d+-title$/)?.input:
             activateTab(parseInt(eventTargetId.match(/^list-item-(\d+)-title$/)[1]))
@@ -21,19 +23,14 @@ document.addEventListener('click', async (event) => {
             break
 
         case eventTargetId.match(/^list-item-\d+-remove$/)?.input:
+            event.stopImmediatePropagation()
+            event.stopPropagation()
+
             await removeFromQuickAccessStore(parseInt(eventTargetId.match(/^list-item-(\d+)-remove$/)[1]))
             removeFromQuickAccessList(parseInt(eventTargetId.match(/^list-item-(\d+)-remove$/)[1]))
             break
-
-        case 'add-current-tab':
-            const currentTab = (await browser.tabs.query({ active: true, currentWindow: true }))[0]
-            console.log('currentTab:', currentTab.id)
-            await addToQuickAccessStore(currentTab.id)
-            addToQuickAccessList(currentTab.id)
-            break
     }
 })
-
 
 async function onOpen () {
     await populateQuickAccessList()
@@ -48,40 +45,6 @@ async function onOpen () {
 }
 
 onOpen()
-
-
-// FUNCTIONS TO MANIPULATE QUICK ACCESS STORE:
-
-async function addToQuickAccessStore (tabId) {
-    const result = await browser.storage.local.get(['quickAccessTabs'])
-    const quickAccessTabs = result.quickAccessTabs || []
-
-    if (quickAccessTabs.indexOf(tabId) < 0) {
-        quickAccessTabs.push(tabId)
-    }
-
-    await browser.storage.local.set({ 'quickAccessTabs': quickAccessTabs })
-}
-
-async function removeFromQuickAccessStore (tabId) {
-    const result = await browser.storage.local.get(['quickAccessTabs'])
-    const quickAccessTabs = result.quickAccessTabs || []
-
-    console.log('quickAccessTabs BEFORE removing ' + tabId + ':', quickAccessTabs)
-
-    const index = quickAccessTabs.indexOf(tabId)
-    if (index > -1) {
-        quickAccessTabs.splice(index, 1)
-    }
-
-    console.log('quickAccessTabs AFTER removing ' + tabId + ':', quickAccessTabs)
-
-    await browser.storage.local.set({ 'quickAccessTabs': quickAccessTabs })
-}
-
-async function clearQuickAccessStore () {
-    await browser.storage.local.set({ 'quickAccessTabs': [] })
-}
 
 
 // FUNCTIONS TO MANIPULATE HTML LIST IN POPUP
@@ -149,6 +112,11 @@ async function _addListItem (listEl, tabId) {
 </span>
 `
     listItemEl.innerHTML = listItemMarkup
+
+    // listItemEl.addEventListener('click', async (event) => {
+    //     activateTab(tabId)
+    //     window.close()
+    // })
 
 
     listEl.appendChild(listItemEl)

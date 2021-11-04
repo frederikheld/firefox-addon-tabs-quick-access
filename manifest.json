@@ -11,7 +11,7 @@
     "default_locale": "en",
 
     "background": {
-        "scripts": ["context-menu-entry.js"]
+        "scripts": ["dist/context-menu/context-menu.js", "dist/functions/quick-access-store.js"]
     },
     "browser_action": {
         "default_icon": {

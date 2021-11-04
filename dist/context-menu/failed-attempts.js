@@ -1,42 +1,21 @@
-'use strict'
+/**
+ * Failed attempts to color the tab.
+ * Might be of use later but right now I'm following
+ * a different approach.
+ */
 
-browser.contextMenus.create({
-    id: 'highlight-tab',
-    title: browser.i18n.getMessage('contextMenuName'),
-    contexts: ['tab']
-})
+// call in main function:
+//
+// browser.tabs.update(tab.id, {
+//     pinned: true
+// })
+// setPageMetaThemeColor('orange')
+// setRootCSSSiteThemeColor('#e3224f')
+// setBrowserThemeColor(tab.windowId, [ 20, 115, 130 ])
+// await setBrowserThemeColor(tab.windowId, '#e3224f')
+// await setTabsCssThemeColor(tab.id, 'red')
 
-browser.browserAction.onClicked.addListener(async function () {
-    console.log('browser action clicked!')
-})
-
-browser.contextMenus.onClicked.addListener(async function (info, tab) {
-    switch (info.menuItemId) {
-        case 'highlight-tab':
-            console.log(info)
-            console.log(tab)
-            // browser.tabs.update(tab.id, {
-            //     pinned: true
-            // })
-            // setPageMetaThemeColor('orange')
-            // setRootCSSSiteThemeColor('#e3224f')
-            // setBrowserThemeColor(tab.windowId, [ 20, 115, 130 ])
-            // await setBrowserThemeColor(tab.windowId, '#e3224f')
-            // await setTabsCssThemeColor(tab.id, 'red')
-            await addTabToQickAccessMenu(tab.id)
-            break
-    }
-})
-
-async function addTabToQickAccessMenu (tabId) {
-    const result = await browser.storage.local.get(['quickAccessTabs'])
-    const quickAccessTabs = result.quickAccessTabs || []
-
-    quickAccessTabs.push(tabId)
-    await browser.storage.local.set({ 'quickAccessTabs': quickAccessTabs })
-}
-
-async function setTabsCssThemeColor (tabId, rgbColorString) {
+ async function setTabsCssThemeColor (tabId, rgbColorString) {
     console.log('tabId:', tabId)
 
     await browser.tabs.insertCSS(tabId, {
