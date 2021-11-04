@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="480"
+   height="480"
+   viewBox="0 0 127 127"
+   version="1.1"
+   id="svg5"
+   inkscape:export-filename="/home/frederik/Repositories/myown/firefox-addon-highlight-tabs/dist/icons/icon-48.png"
+   inkscape:export-xdpi="9.6000004"
+   inkscape:export-ydpi="9.6000004"
+   inkscape:version="1.1.1 (eb90963e84, 2021-10-02)"
+   sodipodi:docname="icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="px"
+     showgrid="true"
+     units="px"
+     width="480px"
+     inkscape:snap-text-baseline="true"
+     inkscape:zoom="0.40567374"
+     inkscape:cx="846.73956"
+     inkscape:cy="409.19583"
+     inkscape:window-width="1920"
+     inkscape:window-height="1021"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer4"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-object-midpoints="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid824"
+       spacingx="0.52916667"
+       spacingy="0.52916667"
+       empspacing="4" />
+    <sodipodi:guide
+       position="0,127"
+       orientation="0,480"
+       id="guide50154" />
+    <sodipodi:guide
+       position="127,127"
+       orientation="480,0"
+       id="guide50156" />
+    <sodipodi:guide
+       position="127,0"
+       orientation="0,-480"
+       id="guide50158" />
+    <sodipodi:guide
+       position="0,0"
+       orientation="-480,0"
+       id="guide50160" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="background"
+     style="display:none">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:4.23333;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect1703"
+       width="127"
+       height="127"
+       x="0"
+       y="0"
+       ry="0" />
+  </g>
+  <g
+     inkscape:label="tab"
+     inkscape:groupmode="layer"
+     id="g864"
+     style="display:inline">
+    <rect
+       style="display:inline;fill:#808080;fill-opacity:1;stroke:#000000;stroke-width:4.75784;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect856-3-6"
+       width="140.64075"
+       height="76.199997"
+       x="-48.212959"
+       y="25.4"
+       ry="22.057894" />
+    <rect
+       style="display:inline;fill:#cccccc;fill-opacity:1;stroke:#808080;stroke-width:4.75785;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect856-3-6-7"
+       width="140.64075"
+       height="76.199997"
+       x="103.24629"
+       y="25.4"
+       ry="21.980772" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="flash"
+     style="display:inline">
+    <path
+       style="fill:#fb9f00;fill-opacity:1;stroke:#b87500;stroke-width:4.23333;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 55.033334,8.4666667 16.933333,71.966667 H 44.45 L 38.1,118.53333 76.2,55.033334 H 48.683334 Z"
+       id="path2033-7-2"
+       sodipodi:nodetypes="ccccccc" />
+  </g>
+</svg>

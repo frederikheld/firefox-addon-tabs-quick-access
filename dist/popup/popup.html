@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../material/material-components-web.min.css">
+        <link rel="stylesheet" href="popup.css">
+    </head>
+
+    <body>
+        <div id="container">
+            <div id="actions">
+                <div id="actions-secondary">
+                    <button class="mdc-button mdc-button--text" style="margin: auto;" id="clear-list">clear list</button>
+                </div>
+                <div id="actions-primary">
+                    <button class="mdc-button mdc-button--unelevated" style="margin: auto;" id="add-current-tab">add current tab</button>
+                </div>
+            </div>
+
+            <!-- <h1>Tabs in Quick Access</h1> -->
+            <ul class="mdc-list mdc-list--icon-list" id="quick-access-list"></ul>
+
+            <div id="debug-html">
+                <hr />
+                <div><button class="mdc-button button-remove-item" id="list-item-0-remove">x</button></div>
+            </div>
+        </div>
+
+        <script src="../material/material-components-web.min.js"></script>
+        <script src="popup.js"></script>
+    </body>
+</html>

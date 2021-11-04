@@ -1,0 +1,6 @@
+{
+    "contextMenuName": {
+        "message": "Add Tab to Quick Access",
+        "description": "Name of the context menu entry that is added to the tab context menu"
+    }
+}
