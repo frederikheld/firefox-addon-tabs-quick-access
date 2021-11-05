@@ -2,15 +2,16 @@
     cursor: pointer;
 } */
 
-#container {
+#popup-container {
     padding: 16px;
 }
 
-#quick-access-list {
-    margin: 16px 0 0 0;
+.quick-access-list {
+    margin: 0;
+    padding: 0;
 }
 
-#quick-access-list li {
+.quick-access-list li {
     display: grid;
     grid-template-columns: 16px auto 16px;
     justify-content: stretch;
@@ -19,27 +20,26 @@
     padding: 4px 8px;
 } 
 
-#quick-access-list li span * {
+.quick-access-list li span * {
     vertical-align: middle;
 }
 
 /* #quick-access-list li span:first-child { } */
 
-#quick-access-list li span:first-child img {
+.quick-access-list li span:first-child img {
     width: 16px;
     height: 16px;
 }
 
-#quick-access-list li span:nth-child(2) {
+.quick-access-list li span:nth-child(2) {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
 
-/* #quick-access-list li span:last-child {
+.quick-access-list li span:last-child {
     justify-items: right;
-    background-color: red;
-}*/
+}
 
 #actions {
     display: grid;
@@ -50,6 +50,14 @@
 
 #actions-primary {
     text-align: right;
+}
+
+#actions-primary > button:not(:last-child) {
+    margin-right: 8px !important;
+}
+
+#actions-secondary > button:not(:first-child) {
+    margin-left: 8px !important;
 }
 
 .button-remove-item {

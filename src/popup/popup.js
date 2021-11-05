@@ -3,17 +3,21 @@
 import { MDCList } from '@material/list'
 
 import { addToQuickAccessStore, removeFromQuickAccessStore, clearQuickAccessStore, isInQuickAccessStore } from '../functions/quick-access-store.js'
-import { isActiveTab, getCurrentTabId } from '../functions/tab-utils.js'
+import { isActiveTab, getCurrentTabId, getObjectsForTabIds } from '../functions/tab-utils.js'
 
-document.getElementById('button-clear-list').addEventListener('click', (event) => {
-    clearQuickAccessStore()
+document.getElementById('button-clear-list').addEventListener('click', async (event) => {
+    const currentTab = (await browser.tabs.query({ active: true, currentWindow: true }))[0]
+    
+    await clearQuickAccessStore()
     clearQuickAccessList()
+    await setButtonStates(currentTab.id)
 })
 
 document.getElementById('button-add-current-tab').addEventListener('click', async (event) => {
     const currentTab = (await browser.tabs.query({ active: true, currentWindow: true }))[0]
+    
     await addToQuickAccessStore(currentTab.id)
-    addToQuickAccessList(currentTab.id)
+    addToQuickAccessList(currentTab)
     await setButtonStates(currentTab.id)
 })
 
@@ -51,7 +55,7 @@ onOpen()
 
 async function setButtonStates (currentTabId) {
     const buttonAddCurrentTabEl = document.getElementById('button-add-current-tab')
-    
+
     if (await isInQuickAccessStore(currentTabId)) {
         buttonAddCurrentTabEl.setAttribute('disabled', true)
     } else {
@@ -64,41 +68,78 @@ async function setButtonStates (currentTabId) {
 
 async function populateQuickAccessList () {
 
-    const listEl = document.getElementById('quick-access-list')
-
-    new MDCList(listEl)
+    const listsContainerEl = document.getElementById('quick-access-lists-container')
 
     const result = await browser.storage.local.get(['quickAccessTabs'])
-    const quickAccessTabs = result.quickAccessTabs || []
+    const quickAccessTabsIds = result.quickAccessTabs || []
 
-    quickAccessTabs.forEach(async (tabId) => {
-        try {
-            await _addListItem(listEl, tabId)
-        } catch (error) { // tab does not exist (because it was closed in the meantime)
-            console.info('Add-On TabsQuickAccess: tab ' + tabId + ' was removed from the store as it was closed in the meantime')
-            await removeFromQuickAccessStore(tabId)
-        }
+    const quickAccessTabs = await getObjectsForTabIds(quickAccessTabsIds, true)
 
-    })
+    for (const [windowId, windowTabObjects] of Object.entries(quickAccessTabs)) {
+        _addList(listsContainerEl, windowId, windowTabObjects)
+    }
 }
 
-function addToQuickAccessList (tabId) {
-    const listEl = document.getElementById('quick-access-list')
+async function addToQuickAccessList (tabObject) {
+    let listEl = document.getElementById('quick-access-list-' + tabObject.windowId)
 
-    if (!listEl.children['list-item-' + tabId]) {
-        _addListItem(listEl, tabId)
+    if (!listEl) {
+        const listsContainerEl = document.getElementById('quick-access-lists-container')
+        await _addList(listsContainerEl, tabObject.windowId)
+        listEl = document.getElementById('quick-access-list-' + tabObject.windowId)
+    }
+
+    if (!listEl.children['list-item-' + tabObject.id]) {
+        await _addListItem(listEl, tabObject.id)
     }
 }
 
 function clearQuickAccessList () {
-    const listEl = document.getElementById('quick-access-list')
-    listEl.replaceChildren()
+    const listContainerEl = document.getElementById('quick-access-lists-container')
+    listContainerEl.replaceChildren()
 }
 
 function removeFromQuickAccessList (tabId) {
-    const listEl = document.getElementById('quick-access-list')
     const listItemEl = document.getElementById('list-item-' + tabId)
-    listEl.removeChild(listItemEl)
+
+    if (listItemEl.parentElement.childNodes.length <= 1) {
+        listItemEl.parentElement.parentElement.parentElement.removeChild(listItemEl.parentElement.parentElement)
+    } else {
+        listItemEl.parentElement.removeChild(listItemEl)
+    }
+}
+
+async function _addList (listsContainerEl, windowId, windowTabObjects = []) {
+    const isCurrentWindow = (await browser.windows.getCurrent()).id === parseInt(windowId)
+
+    const listContainerEl = document.createElement('section')
+    listContainerEl.classList.add('quick-access-list-container', 'list-' + (isCurrentWindow ? 'primary' : 'secondary'))
+    listContainerEl.id = 'quick-access-list-container-' + windowId
+
+    const headingEl = document.createElement('h2')
+    headingEl.innerHTML = 'Window ' + windowId + (isCurrentWindow ? ' (current)' : '')
+
+    listContainerEl.append(headingEl)
+
+    const listEl = document.createElement('ul')
+    listEl.classList.add('mdc-list', 'quick-access-list')
+    listEl.id = 'quick-access-list-' + windowId
+
+    listContainerEl.append(listEl)
+    
+    new MDCList(listEl)
+
+    for (const tabObject of windowTabObjects) {
+        _addListItem(listEl, tabObject.id)
+    }
+
+    if (isCurrentWindow) {
+        listsContainerEl.prepend(listContainerEl)
+    } else {
+        listsContainerEl.append(listContainerEl)
+    }
+
+    return listContainerEl
 }
 
 async function _addListItem (listEl, tabId) {
@@ -116,8 +157,7 @@ async function _addListItem (listEl, tabId) {
 
     const currentTabInfo = await browser.tabs.get(tabId)
     if (await isActiveTab(currentTabInfo.id)) {
-        listItemEl.classList.add('active-tab')
-        // listItemEl.classList.add('mdc-theme--background')
+        listItemEl.classList.add('list-item-active-tab')
     }
 
     const listItemGraphicEl = document.createElement('span')
@@ -140,26 +180,9 @@ async function _addListItem (listEl, tabId) {
 
     listItemEl.appendChild(listItemMetaEl)
 
-//     const listItemMarkup = `
-// <span class="mdc-list-item__graphic" id="list-item-${tabId}-favicon">
-//     <img src="${tabInfo.favIconUrl}">
-// </span>
-// <span class="mdc-list-item__text" id="list-item-${tabId}-title">
-//     ${tabInfo.title}
-// </span>
-// <span class="mdc-list-item__meta">
-//     <button class="mdc-button button-remove-item" id="list-item-${tabId}-remove">x</button>
-// </span>
-// `
-//     listItemEl.innerHTML = listItemMarkup
-
-    // listItemEl.addEventListener('click', async (event) => {
-    //     activateTab(tabId)
-    //     window.close()
-    // })
-
-
     listEl.appendChild(listItemEl)
+
+    return listItemEl
 }
 
 

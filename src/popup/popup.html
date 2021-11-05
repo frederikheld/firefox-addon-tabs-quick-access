@@ -2,27 +2,21 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <!-- <link rel="stylesheet" href="../material-design/material-components-web.min.css"> -->
         <link rel="stylesheet" href="popup.css">
-
-        <!-- <script defer src="../material-design/material-components-web.min.js"></script> -->
-        <!-- <script defer src="../functions/quick-access-store.js"></script> -->
         <script defer src="popup.bundle.js"></script>
     </head>
 
     <body>
-        <div id="container">
+        <div id="popup-container">
             <div id="actions">
-                <div id="actions-secondary">
-                    <button id="button-clear-list" class="mdc-button mdc-button--text mdc-button--secondary" style="margin: auto;">clear list</button>
-                </div>
+                <div id="actions-secondary"></div>
                 <div id="actions-primary">
+                    <button id="button-clear-list" class="mdc-button mdc-button--text mdc-button--secondary" style="margin: auto;">clear list</button>
                     <button id="button-add-current-tab" class="mdc-button mdc-button--unelevated" style="margin: auto;">add current tab</button>
                 </div>
             </div>
 
-            <!-- <h1>Tabs in Quick Access</h1> -->
-            <ul class="mdc-list" id="quick-access-list"></ul>
+            <div id="quick-access-lists-container"></div>
         </div>
     </body>
 </html>

@@ -1,6 +1,6 @@
 @use "@material/theme" with (
     $primary: #f59200,
-    $secondary: #bbbbbb,
+    $secondary: #cccccc,
     $background: #ffd79b,
     $surface: #eeeeee,
     $on-primary: #000000,
@@ -12,10 +12,21 @@
 @use "@material/list/mdc-list";
 @use "@material/button/styles";
 
-.active-tab {
+.list-primary .list-item-active-tab {
     background-color: theme.$background;
 }
 
+.list-secondary .list-item-active-tab {
+    background-color: theme.$secondary;
+}
+
 .mdc-button.mdc-button--secondary {
-    color: theme.$on-secondary
+    color: theme.$on-secondary;
+}
+
+#popup-container h2 {
+    color: theme.$on-secondary;
+    font-size: 1em;
+    font-weight: normal;
+    margin-bottom: 8px;
 }
