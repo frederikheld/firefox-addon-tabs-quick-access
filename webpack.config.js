@@ -105,12 +105,14 @@ const configPopup = {
 
 module.exports = () => {
 
-  // const configs = [configGlobal, configIcons, configBackgroundScripts, configPopup]
-
-  const configs = [configGlobal, configIcons, configPopup]
+  const configs = [configGlobal, configPopup]
 
   if (isProduction) {
     configs.map((config) => {
+      // Do not generate icons in dev mode to save time.
+      // Firefox won't reload them without re-installing the addon anyway!
+      configs.push(configIcons)
+
       config.mode = 'production'
       config.plugins?.push(new MiniCssExtractPlugin())
       config.target = 'web'
