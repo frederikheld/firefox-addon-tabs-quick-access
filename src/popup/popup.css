@@ -6,6 +6,10 @@
     padding: 16px;
 }
 
+.quick-access-list-container {
+    margin-top: 8px;
+}
+
 .quick-access-list {
     margin: 0;
     padding: 0;
