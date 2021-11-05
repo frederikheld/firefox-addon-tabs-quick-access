@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@material/button": "^13.0.0",
-    "@material/list": "^13.0.0",
-    "material-components-web": "^13.0.0"
+    "@material/list": "^13.0.0"
   }
 }
