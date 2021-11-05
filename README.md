@@ -17,6 +17,8 @@ $ npm install
 $ npm run build
 ```
 
+> Webpack sometimes does not run properly. Make sure that both sub-dirs `/dist/icons` and `/dist/popup` are created properly.
+
 ## Load add-on in Firefox
 
 You can install the contents of `/dist` as temporary add-on in Firefox for testing purposes and development.
