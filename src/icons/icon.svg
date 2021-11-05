@@ -25,13 +25,13 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="1"
      inkscape:document-units="px"
-     showgrid="false"
+     showgrid="true"
      units="px"
      width="480px"
      inkscape:snap-text-baseline="true"
-     inkscape:zoom="0.40567374"
-     inkscape:cx="-99.83392"
-     inkscape:cy="493.00701"
+     inkscape:zoom="0.81134749"
+     inkscape:cx="143.58829"
+     inkscape:cy="369.75526"
      inkscape:window-width="1920"
      inkscape:window-height="1021"
      inkscape:window-x="0"
@@ -132,7 +132,7 @@
      style="display:inline">
     <path
        id="rect856-3-6"
-       style="display:inline;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:9.525;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:12.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M -16.933333,25.4 H 80.433334 C 93.225704,25.4 101.6,33.774301 101.6,46.566667 v 33.866667 c 0,14.816667 8.46667,23.283336 23.28333,23.283336 h 12.7"
        sodipodi:nodetypes="cscccc" />
   </g>
