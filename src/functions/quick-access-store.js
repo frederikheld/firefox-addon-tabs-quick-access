@@ -29,7 +29,7 @@ async function clearQuickAccessStore () {
     await browser.storage.local.set({ 'quickAccessTabs': [] })
 }
 
-exports = {
+export {
     addToQuickAccessStore,
     removeFromQuickAccessStore,
     clearQuickAccessStore

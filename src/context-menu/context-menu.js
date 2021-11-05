@@ -1,5 +1,7 @@
 'use strict'
 
+import { addToQuickAccessStore } from '../functions/quick-access-store.js'
+
 browser.contextMenus.create({
     id: 'highlight-tab',
     title: browser.i18n.getMessage('contextMenuName'),

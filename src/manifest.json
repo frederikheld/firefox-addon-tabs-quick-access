@@ -5,20 +5,20 @@
 
     "description": "Store selected tabs in this addon's qick access menu to quickly jump back to them if needed.",
     "icons": {
-        "48": "dist/icons/icon-48.png",
-        "96": "dist/icons/icon-96.png"
+        "48": "icons/icon-48.png",
+        "96": "icons/icon-96.png"
     },
     "default_locale": "en",
 
     "background": {
-        "scripts": ["dist/context-menu/context-menu.js", "dist/functions/quick-access-store.js"]
+        "scripts": ["background_scripts.bundle.js"]
     },
     "browser_action": {
         "default_icon": {
-            "48": "dist/icons/icon-48.png"
+            "48": "icons/icon-48.png"
         },
         "default_title": "Tabs Quick Access",
-        "default_popup": "dist/popup/popup.html",
+        "default_popup": "popup/popup.html",
         "browser_style": true
     },
     "permissions": ["contextMenus", "theme", "activeTab", "tabs", "<all_urls>", "storage"]

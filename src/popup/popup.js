@@ -1,5 +1,9 @@
 'use strict'
 
+import { MDCList } from '@material/list'
+
+import { addToQuickAccessStore, removeFromQuickAccessStore, clearQuickAccessStore } from '../functions/quick-access-store.js'
+
 document.getElementById('clear-list').addEventListener('click', (event) => {
     clearQuickAccessStore()
     clearQuickAccessList()
@@ -51,8 +55,6 @@ onOpen()
 
 async function populateQuickAccessList () {
 
-    const MDCList = mdc.list.MDCList
-
     const listEl = document.getElementById('quick-access-list')
 
     new MDCList(listEl)
@@ -92,26 +94,53 @@ function removeFromQuickAccessList (tabId) {
 
 async function _addListItem (listEl, tabId) {
     const listItemEl = document.createElement('li')
-
     listItemEl.classList.add('mdc-list-item')
     listItemEl.setAttribute('id', 'list-item-' + tabId)
+
+    let highestTabIndex = 0
+    for (const el of listEl.children) {
+        if (el.tabIndex > highestTabIndex) {
+            highestTabIndex = el.tabIndex
+        }
+    }
+    listItemEl.setAttribute('tabindex', highestTabIndex + 1)
 
     const tabInfo = await browser.tabs.get(tabId)
 
     console.log('tabInfo:', tabInfo)
 
-    const listItemMarkup = `
-<span class="mdc-list-item__graphic" id="list-item-${tabId}-favicon">
-    <img src="${tabInfo.favIconUrl}">
-</span>
-<span class="mdc-list-item__text" id="list-item-${tabId}-title">
-    ${tabInfo.title}
-</span>
-<span class="mdc-list-item__meta">
-    <button class="mdc-button button-remove-item" id="list-item-${tabId}-remove">x</button>
-</span>
-`
-    listItemEl.innerHTML = listItemMarkup
+    const listItemGraphicEl = document.createElement('span')
+    listItemGraphicEl.classList.add('mdc-list-item__graphic')
+    listItemGraphicEl.id = 'list-item-' + tabId + '-favicon'
+    listItemGraphicEl.innerHTML = '<img src="' + tabInfo.favIconUrl + '"></img>'
+    
+    listItemEl.appendChild(listItemGraphicEl)
+
+    const listItemTextEl = document.createElement('span')
+    listItemTextEl.classList.add('mdc-list-item__text')
+    listItemTextEl.id = 'list-item-' + tabId + '-title'
+    listItemTextEl.innerHTML = tabInfo.title
+
+    listItemEl.appendChild(listItemTextEl)
+
+    const listItemMetaEl = document.createElement('span')
+    listItemMetaEl.classList.add('mdc-list-item__meta')
+    listItemMetaEl.innerHTML = '<button class="mdc-button button-remove-item" id="list-item-' + tabId + '-remove">x</button>'
+
+    listItemEl.appendChild(listItemMetaEl)
+
+//     const listItemMarkup = `
+// <span class="mdc-list-item__graphic" id="list-item-${tabId}-favicon">
+//     <img src="${tabInfo.favIconUrl}">
+// </span>
+// <span class="mdc-list-item__text" id="list-item-${tabId}-title">
+//     ${tabInfo.title}
+// </span>
+// <span class="mdc-list-item__meta">
+//     <button class="mdc-button button-remove-item" id="list-item-${tabId}-remove">x</button>
+// </span>
+// `
+//     listItemEl.innerHTML = listItemMarkup
 
     // listItemEl.addEventListener('click', async (event) => {
     //     activateTab(tabId)
