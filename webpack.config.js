@@ -50,7 +50,7 @@ const configIcons = {
           {
             loader: path.resolve('node_modules/svg-to-png-loader/lib/index.js'),
             options: {
-              sizes: ['16', '48', '96'],
+              sizes: ['48', '96'],
               name: '[name]-[width].png'
             }
           }
