@@ -4,8 +4,8 @@
     $background: #ffd79b,
     $surface: #eeeeee,
     $on-primary: #000000,
-    $on-secondary: #333333,
-    $on-surface: #333333
+    $on-secondary: #666666,
+    $on-surface: #666666
 );
 
 @use "@material/list";
@@ -14,4 +14,8 @@
 
 .active-tab {
     background-color: theme.$background;
+}
+
+.mdc-button.mdc-button--secondary {
+    color: theme.$on-secondary
 }
