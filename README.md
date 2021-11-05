@@ -10,16 +10,27 @@ This repository uses webpack to optimize files in the `/src` directory and gener
 
 The generated output will be put into `/dist` and is the code ready to be submitted to AMO.
 
-Run the build with
+Install dependencies, then run the build with
 
 ```sh
+$ npm install
 $ npm run build
 ```
 
-## Install
+## Load add-on in Firefox
 
 You can install the contents of `/dist` as temporary add-on in Firefox for testing purposes and development.
 
 Open _about:debugging_ in the address bar and switch to the _This Firefox_ tab.
 
 Click on _Load Temporary Add-on_ and open `/dist/manifest.json`. The add-on will stay loaded until you close Firefox.
+
+## Develop
+
+You can run the build in watch mode while you are developing. This will make webpack build changes on the fly.
+
+```sh
+$ npm run build:watch
+```
+
+The contents of the popup will automatically load updated files. If you change the context menu, you have to click _Reload_ in _about:debugging_.
