@@ -15,3 +15,11 @@ Run the build with
 ```sh
 $ npm run build
 ```
+
+## Install
+
+You can install the contents of `/dist` as temporary add-on in Firefox for testing purposes and development.
+
+Open _about:debugging_ in the address bar and switch to the _This Firefox_ tab.
+
+Click on _Load Temporary Add-on_ and open `/dist/manifest.json`. The add-on will stay loaded until you close Firefox.
