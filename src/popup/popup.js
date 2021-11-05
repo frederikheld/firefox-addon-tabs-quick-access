@@ -105,21 +105,32 @@ async function _addListItem (listEl, tabId) {
     }
     listItemEl.setAttribute('tabindex', highestTabIndex + 1)
 
-    const tabInfo = await browser.tabs.get(tabId)
+    const currentTabInfo = await browser.tabs.get(tabId)
+    // console.log('currentTabInfo:', currentTabInfo)
 
-    console.log('tabInfo:', tabInfo)
+    const activeTabInfo = (await browser.tabs.query({ active: true })).filter(item => item.windowId === currentTabInfo.windowId)[0]
+    // console.log('activeTabInfo:', activeTabInfo)
+
+    // const windowInfo = await browser.windows.get(activeTabInfo.windowId)
+    // console.log('windowInfo:', windowInfo)
+
+    if (activeTabInfo.id === currentTabInfo.id) {
+        console.log('current tab is in the list:', currentTabInfo.title)
+        listItemEl.classList.add('active-tab')
+        listItemEl.classList.add('mdc-theme--background')
+    }
 
     const listItemGraphicEl = document.createElement('span')
     listItemGraphicEl.classList.add('mdc-list-item__graphic')
     listItemGraphicEl.id = 'list-item-' + tabId + '-favicon'
-    listItemGraphicEl.innerHTML = '<img src="' + tabInfo.favIconUrl + '"></img>'
+    listItemGraphicEl.innerHTML = '<img src="' + currentTabInfo.favIconUrl + '"></img>'
     
     listItemEl.appendChild(listItemGraphicEl)
 
     const listItemTextEl = document.createElement('span')
     listItemTextEl.classList.add('mdc-list-item__text')
     listItemTextEl.id = 'list-item-' + tabId + '-title'
-    listItemTextEl.innerHTML = tabInfo.title
+    listItemTextEl.innerHTML = currentTabInfo.title
 
     listItemEl.appendChild(listItemTextEl)
 

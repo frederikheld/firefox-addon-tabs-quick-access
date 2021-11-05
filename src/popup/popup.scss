@@ -1,11 +1,13 @@
 @use "@material/theme" with (
     $primary: #f59200,
+    $background: #ffd79b,
     $secondary: #cccccc
 );
 
 @use "@material/list";
 @use "@material/list/mdc-list";
-// @use "@material/list/mdc-list-item";
 @use "@material/button/styles";
 
-// @include list.core-styles;
+.active-tab {
+    background-color: theme.$background;
+}
