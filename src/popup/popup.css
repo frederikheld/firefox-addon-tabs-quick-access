@@ -52,16 +52,10 @@
     text-align: right;
 }
 
-
 .button-remove-item {
     min-width: auto;
     min-height: auto;
     height: 16px;
     width: 16px;
     padding: 0;
-    /* border: 1px solid grey; */
 }
-
-/* #debug-html {
-    display: none;
-} */

@@ -2,18 +2,19 @@
 
 import { MDCList } from '@material/list'
 
-import { addToQuickAccessStore, removeFromQuickAccessStore, clearQuickAccessStore } from '../functions/quick-access-store.js'
+import { addToQuickAccessStore, removeFromQuickAccessStore, clearQuickAccessStore, isInQuickAccessStore } from '../functions/quick-access-store.js'
+import { isActiveTab, getCurrentTabId } from '../functions/tab-utils.js'
 
-document.getElementById('clear-list').addEventListener('click', (event) => {
+document.getElementById('button-clear-list').addEventListener('click', (event) => {
     clearQuickAccessStore()
     clearQuickAccessList()
 })
 
-document.getElementById('add-current-tab').addEventListener('click', async (event) => {
+document.getElementById('button-add-current-tab').addEventListener('click', async (event) => {
     const currentTab = (await browser.tabs.query({ active: true, currentWindow: true }))[0]
-    console.log('currentTab:', currentTab.id)
     await addToQuickAccessStore(currentTab.id)
     addToQuickAccessList(currentTab.id)
+    await setButtonStates(currentTab.id)
 })
 
 document.addEventListener('click', async (event) => {
@@ -30,25 +31,33 @@ document.addEventListener('click', async (event) => {
             event.stopImmediatePropagation()
             event.stopPropagation()
 
-            await removeFromQuickAccessStore(parseInt(eventTargetId.match(/^list-item-(\d+)-remove$/)[1]))
-            removeFromQuickAccessList(parseInt(eventTargetId.match(/^list-item-(\d+)-remove$/)[1]))
+            const tabId = parseInt(eventTargetId.match(/^list-item-(\d+)-remove$/)[1])
+            await removeFromQuickAccessStore(tabId)
+            removeFromQuickAccessList(tabId)
+            await setButtonStates(tabId)
             break
     }
 })
 
 async function onOpen () {
     await populateQuickAccessList()
-
-    try {
-        browser
-        const debugEl = document.getElementById('debug-html')
-        debugEl.style.display = 'none'
-    } catch (error) {
-        console.log(error)
-    }
+    await setButtonStates(await getCurrentTabId())
 }
 
 onOpen()
+
+
+// FUNCTIONS TO MANIPULATE UI IN POPUP
+
+async function setButtonStates (currentTabId) {
+    const buttonAddCurrentTabEl = document.getElementById('button-add-current-tab')
+    
+    if (await isInQuickAccessStore(currentTabId)) {
+        buttonAddCurrentTabEl.setAttribute('disabled', true)
+    } else {
+        buttonAddCurrentTabEl.removeAttribute('disabled')
+    }
+}
 
 
 // FUNCTIONS TO MANIPULATE HTML LIST IN POPUP
@@ -66,7 +75,7 @@ async function populateQuickAccessList () {
         try {
             await _addListItem(listEl, tabId)
         } catch (error) { // tab does not exist (because it was closed in the meantime)
-            console.log('tab ' + tabId + ' was removed from the store as it was closed in the meantime')
+            console.info('Add-On TabsQuickAccess: tab ' + tabId + ' was removed from the store as it was closed in the meantime')
             await removeFromQuickAccessStore(tabId)
         }
 
@@ -106,18 +115,9 @@ async function _addListItem (listEl, tabId) {
     listItemEl.setAttribute('tabindex', highestTabIndex + 1)
 
     const currentTabInfo = await browser.tabs.get(tabId)
-    // console.log('currentTabInfo:', currentTabInfo)
-
-    const activeTabInfo = (await browser.tabs.query({ active: true })).filter(item => item.windowId === currentTabInfo.windowId)[0]
-    // console.log('activeTabInfo:', activeTabInfo)
-
-    // const windowInfo = await browser.windows.get(activeTabInfo.windowId)
-    // console.log('windowInfo:', windowInfo)
-
-    if (activeTabInfo.id === currentTabInfo.id) {
-        console.log('current tab is in the list:', currentTabInfo.title)
+    if (await isActiveTab(currentTabInfo.id)) {
         listItemEl.classList.add('active-tab')
-        listItemEl.classList.add('mdc-theme--background')
+        // listItemEl.classList.add('mdc-theme--background')
     }
 
     const listItemGraphicEl = document.createElement('span')

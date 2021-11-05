@@ -1,7 +1,11 @@
 @use "@material/theme" with (
     $primary: #f59200,
+    $secondary: #bbbbbb,
     $background: #ffd79b,
-    $secondary: #cccccc
+    $surface: #eeeeee,
+    $on-primary: #000000,
+    $on-secondary: #333333,
+    $on-surface: #333333
 );
 
 @use "@material/list";

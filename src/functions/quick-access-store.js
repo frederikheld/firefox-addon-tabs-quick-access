@@ -15,6 +15,7 @@ async function addToQuickAccessStore (tabId) {
 
 async function removeFromQuickAccessStore (tabId) {
     const result = await browser.storage.local.get(['quickAccessTabs'])
+    
     const quickAccessTabs = result.quickAccessTabs || []
 
     const index = quickAccessTabs.indexOf(tabId)
@@ -29,8 +30,14 @@ async function clearQuickAccessStore () {
     await browser.storage.local.set({ 'quickAccessTabs': [] })
 }
 
+async function isInQuickAccessStore (tabId) {
+    const result = await browser.storage.local.get(['quickAccessTabs'])
+    return result.quickAccessTabs.includes(tabId)
+}
+
 export {
     addToQuickAccessStore,
     removeFromQuickAccessStore,
-    clearQuickAccessStore
+    clearQuickAccessStore,
+    isInQuickAccessStore
 }
