@@ -64,6 +64,7 @@ const configPopup = {
   entry: {
     popup: [
       './src/functions/quick-access-store.js',
+      './src/functions/tab-utils.js',
       './src/popup/popup.js',
       './src/popup/popup.scss',
       './src/popup/popup.css'
@@ -108,19 +109,22 @@ module.exports = () => {
   const configs = [configGlobal, configPopup]
 
   if (isProduction) {
+    // Do not generate icons in dev mode to save time.
+    // Firefox won't reload them without re-installing the addon anyway!
+    configs.push(configIcons)
+
     configs.map((config) => {
-      // Do not generate icons in dev mode to save time.
-      // Firefox won't reload them without re-installing the addon anyway!
-      configs.push(configIcons)
 
       config.mode = 'production'
       config.plugins?.push(new MiniCssExtractPlugin())
       config.target = 'web'
+      config.devtool = 'source-map'
     })
   } else {
     configs.map((config) => {
       config.mode = 'development'
       config.target = 'web'
+      config.devtool = 'source-map'
     })
   }
   return configs
